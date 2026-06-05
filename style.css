@@ -274,24 +274,11 @@ th {
     padding-top: 15px;
 }
 
-.footer-notes {
-    align-items: flex-start;
-}
-
-.footer-notes label {
-    margin-top: 5px;
-}
-
-.footer-notes textarea {
-    height: 40px;
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    background: transparent;
-}
-
-.footer-notes textarea:focus {
-    outline: none;
-    border-bottom-color: var(--accent-color);
+.end-mark {
+    text-align: right;
+    font-size: 15px;
+    padding-right: 5px;
+    letter-spacing: 4px;
 }
 
 @page {
