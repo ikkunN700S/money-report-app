@@ -31,11 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 初期データ
     const initialIncomes = [
-        { date: '2026-05-15', desc: '楽曲配信収益 (ニコニコ等)', amount: 12000 }
     ];
     const initialExpenses = [
-        { date: '2026-05-20', desc: 'Minecraftサーバー維持費', amount: 2400 },
-        { date: '2026-05-25', desc: '交通費 (遠征費)', amount: 15000 }
     ];
 
     // 行を作成して指定のtbodyに追加する関数
