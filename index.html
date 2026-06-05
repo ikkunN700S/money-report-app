@@ -21,16 +21,35 @@
     </div>
 
     <div class="page" id="report-page">
+        <div class="doc-header-right">
+            <div class="header-right-row">
+                <label>発 行 日 :</label>
+                <input type="text" id="issue-date" placeholder="yyyy/mm/dd">
+            </div>
+            <div class="header-right-row">
+                <label>文書番号:</label>
+                <input type="text" id="doc-number" placeholder="例: 2026-001">
+            </div>
+        </div>
+
         <h1>収支報告書</h1>
         
         <div class="header-info">
-            <div class="info-group">
-                <label>対象期間:</label>
-                <input type="month" id="period-start"> ～ <input type="month" id="period-end">
+            <div class="header-left">
+                <div class="info-group">
+                    <label>対象期間:</label>
+                    <input type="month" id="period-start"> ～ <input type="month" id="period-end">
+                </div>
             </div>
-            <div class="info-group">
-                <label>報告者:</label>
-                <input type="text" id="reporter-name" value="水上イリス (ICCHAMA)" placeholder="名前を入力">
+            <div class="header-right">
+                <div class="info-group">
+                    <label>レーベル・団体名:</label>
+                    <input type="text" id="label-name" placeholder="団体名を入力">
+                </div>
+                <div class="info-group">
+                    <label>報告者:</label>
+                    <input type="text" id="reporter-name" value="水上イリス (ICCHAMA)" placeholder="名前を入力">
+                </div>
             </div>
         </div>
 
@@ -54,15 +73,14 @@
             <thead>
                 <tr>
                     <th style="width: 15%;">日付</th>
-                    <th style="width: 60%;">摘要（内容）</th>
+                    <th style="width: 60%;">摘要<br><span style="font-size:11px; font-weight:normal;">内容</span></th>
                     <th style="width: 20%;">金額 (円)</th>
                     <th class="no-print" style="width: 5%;">操作</th>
                 </tr>
             </thead>
-            <tbody id="income-table-body">
-                </tbody>
+            <tbody id="income-table-body"></tbody>
         </table>
-        <div class="controls no-print" style="margin-bottom: 30px;">
+        <div class="controls no-print" style="margin-bottom: 20px;">
             <button id="add-income-btn" class="primary-btn">＋ 収入の項目を追加</button>
         </div>
 
@@ -71,16 +89,22 @@
             <thead>
                 <tr>
                     <th style="width: 15%;">日付</th>
-                    <th style="width: 60%;">摘要（内容）</th>
+                    <th style="width: 60%;">摘要<br><span style="font-size:11px; font-weight:normal;">内容</span></th>
                     <th style="width: 20%;">金額 (円)</th>
                     <th class="no-print" style="width: 5%;">操作</th>
                 </tr>
             </thead>
-            <tbody id="expense-table-body">
-                </tbody>
+            <tbody id="expense-table-body"></tbody>
         </table>
-        <div class="controls no-print">
+        <div class="controls no-print" style="margin-bottom: 20px;">
             <button id="add-expense-btn" class="primary-btn">＋ 支出の項目を追加</button>
+        </div>
+
+        <div class="doc-footer">
+            <div class="info-group footer-notes">
+                <label>備考・連絡先:</label>
+                <textarea id="footer-text" rows="2" placeholder="所在地、メールアドレス、特記事項などを入力できます"></textarea>
+            </div>
         </div>
     </div>
 

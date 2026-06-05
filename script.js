@@ -7,22 +7,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const importBtn = document.getElementById('import-btn');
     const pasteArea = document.getElementById('paste-area');
 
-    function setDefaultFiscalYear() {
+    function setDefaultDates() {
         const now = new Date();
         const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth();
+        const currentMonth = now.getMonth(); 
 
         let targetYear = (currentMonth >= 3) ? currentYear - 1 : currentYear - 2;
         document.getElementById('period-start').value = `${targetYear}-04`;
         document.getElementById('period-end').value = `${targetYear + 1}-03`;
+
+        const yyyy = currentYear;
+        const mm = String(currentMonth + 1).padStart(2, '0');
+        const dd = String(now.getDate()).padStart(2, '0');
+        // yyyy/mm/dd 形式でテキスト入力欄にセット
+        document.getElementById('issue-date').value = `${yyyy}/${mm}/${dd}`;
     }
 
-    function createRow(tbody, data = { date: '', desc: '', amount: '' }) {
+    function createRow(tbody, data = { date: '', store: '', item: '', amount: '' }) {
         const tr = document.createElement('tr');
         
         tr.innerHTML = `
             <td><input type="date" class="row-date" value="${data.date}"></td>
-            <td><input type="text" class="row-desc" value="${data.desc}" placeholder="内容を入力"></td>
+            <td>
+                <div class="desc-group">
+                    <input type="text" class="row-store" value="${data.store}" placeholder="摘要 (ストア名等)">
+                    <input type="text" class="row-item" value="${data.item}" placeholder="内容 (商品名・備考等)">
+                </div>
+            </td>
             <td><input type="number" class="row-amount" value="${data.amount}" placeholder="0" min="0"></td>
             <td class="no-print" style="text-align:center;">
                 <button class="delete-btn" tabindex="-1">削除</button>
@@ -60,7 +71,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-balance').textContent = `¥${balance.toLocaleString()}`;
     }
 
-    // --- コピペデータのインポート処理 ---
     function importData() {
         const text = pasteArea.value;
         if (!text.trim()) {
@@ -68,20 +78,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // ▼ 追加: 空行（日付、内容、金額がすべて未入力の行）を削除する関数
         const removeEmptyRows = (tbody) => {
             tbody.querySelectorAll('tr').forEach(row => {
                 const date = row.querySelector('.row-date').value;
-                const desc = row.querySelector('.row-desc').value.trim();
+                const store = row.querySelector('.row-store').value.trim();
+                const item = row.querySelector('.row-item').value.trim();
                 const amount = row.querySelector('.row-amount').value;
                 
-                if (!date && !desc && !amount) {
+                if (!date && !store && !item && !amount) {
                     row.remove();
                 }
             });
         };
 
-        // インポート前に両方のテーブルの空行をお掃除
         removeEmptyRows(incomeTableBody);
         removeEmptyRows(expenseTableBody);
 
@@ -99,24 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const expenseStr = cols[2] ? cols[2].replace(/[,¥]/g, '').trim() : '';
             const incomeStr = cols[3] ? cols[3].replace(/[,¥]/g, '').trim() : '';
-            const notes = cols[4] ? cols[4].trim() : '';
+            const notes = cols[4] ? cols[4].trim() : ''; 
 
             const formattedDate = rawDate.replace(/\//g, '-');
-
-            let desc = storeName;
-            if (notes) {
-                desc += ` (${notes})`; 
-            }
-
             const expenseAmount = parseInt(expenseStr) || 0;
             const incomeAmount = parseInt(incomeStr) || 0;
 
             if (incomeAmount > 0) {
-                createRow(incomeTableBody, { date: formattedDate, desc: desc, amount: incomeAmount });
+                createRow(incomeTableBody, { date: formattedDate, store: storeName, item: notes, amount: incomeAmount });
                 importedCount++;
             }
             if (expenseAmount > 0) {
-                createRow(expenseTableBody, { date: formattedDate, desc: desc, amount: expenseAmount });
+                createRow(expenseTableBody, { date: formattedDate, store: storeName, item: notes, amount: expenseAmount });
                 importedCount++;
             }
         });
@@ -131,9 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 初期化
-    setDefaultFiscalYear(); 
+    setDefaultDates(); 
     
-    // 手入力を想定して最初は空行を1つずつ出しておく
     createRow(incomeTableBody);
     createRow(expenseTableBody);
     calculateTotals();
