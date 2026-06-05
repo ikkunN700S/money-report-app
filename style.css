@@ -1,0 +1,336 @@
+:root {
+    --bg-color: #f0f2f5;
+    --paper-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #aaaaaa;
+    --accent-color: #4a90e2;
+}
+
+body {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.import-section {
+    width: 210mm;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.import-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.import-header h3 {
+    margin: 0;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+textarea {
+    width: 100%;
+    height: 60px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 6px 12px;
+    font-size: 13px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.primary-btn {
+    background-color: var(--accent-color);
+}
+
+.success-btn {
+    background-color: #2ecc71;
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.hint {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+/* A4用紙スタイル */
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 12mm 15mm;
+    background-color: var(--paper-color);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+    border-bottom: 2px solid var(--text-color);
+    padding-bottom: 5px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+    font-size: 20px;
+}
+
+.section-title {
+    font-size: 15px;
+    margin: 0 0 5px 0;
+    padding-left: 5px;
+    border-left: 4px solid var(--text-color);
+}
+
+.header-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 15px;
+}
+
+.header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.info-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.info-group label {
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+/* 基本の入力欄スタイル */
+input,
+select {
+    border: 1px solid #ccc;
+    padding: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+input[type="text"] {
+    width: 100%;
+}
+
+.info-group input {
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.info-group input[type="text"] {
+    min-width: 180px;
+}
+
+.header-left input[type="month"] {
+    width: 110px;
+    text-align: center;
+}
+
+.info-group input:focus {
+    outline: none;
+    border-bottom-color: var(--accent-color);
+}
+
+
+.doc-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 5px;
+    gap: 0px;
+}
+
+.header-right-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.header-right-row label {
+    font-weight: bold;
+    font-size: 13px;
+    width: 65px;
+    text-align: right;
+}
+
+.header-right-row input[type="text"] {
+    width: 85px;
+    text-align: right;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.header-right-row input[type="text"]:focus {
+    outline: none;
+    border-bottom-color: var(--accent-color);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 5px;
+}
+
+th,
+td {
+    border: 1px solid var(--border-color);
+    padding: 5px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background-color: #f8f9fa;
+    text-align: center;
+    font-size: 13px;
+}
+
+.summary-table {
+    width: 50%;
+    margin: 0 0 10px auto;
+}
+
+.summary-table td {
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.row-amount {
+    text-align: right;
+    font-weight: bold;
+}
+
+.desc-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.row-store {
+    font-weight: bold;
+}
+
+.row-item {
+    font-size: 11px;
+    color: #555;
+}
+
+.doc-footer {
+    margin-top: auto;
+    padding-top: 15px;
+}
+
+.end-mark {
+    text-align: right;
+    font-size: 15px;
+    padding-right: 5px;
+    letter-spacing: 4px;
+}
+
+@page {
+    size: A4;
+    margin: 0mm;
+}
+
+@media print {
+    body {
+        background-color: var(--paper-color);
+        padding: 0;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .page {
+        margin: 0;
+        box-shadow: none;
+        width: 100%;
+        min-height: auto;
+        padding: 8mm 15mm;
+    }
+
+    input,
+    textarea {
+        border: none !important;
+        background: transparent !important;
+        padding: 0;
+        resize: none;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator,
+    input[type="month"]::-webkit-calendar-picker-indicator {
+        display: none;
+        -webkit-appearance: none;
+    }
+
+    .header-left input[type="month"] {
+        width: auto;
+    }
+
+    td {
+        padding: 4px 4px;
+    }
+
+    .section-title {
+        margin-top: 15px;
+    }
+
+    .row-item {
+        color: #333;
+    }
+}

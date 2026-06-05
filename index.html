@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>収支報告書</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="controls no-print import-section">
+        <div class="import-header">
+            <h3>📥 スプレッドシートから一括インポート</h3>
+            <button id="print-btn" class="success-btn">📄 PDF出力 (印刷)</button>
+        </div>
+        <p class="hint">列の順番: 【日付】 【摘要内容(ストア名)】 【支払金額】 【収入金額】 【備考(商品名)】</p>
+        <textarea id="paste-area" placeholder="スプレッドシートの行をコピーし、ここに貼り付けてください..."></textarea>
+        <div style="text-align: right; margin-top: 10px;">
+            <button id="import-btn" class="primary-btn">表に反映する</button>
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #ccc;">
+    </div>
+
+    <div class="page" id="report-page">
+        <div class="doc-header-right">
+            <div class="header-right-row">
+                <label>発 行 日 :</label>
+                <input type="text" id="issue-date" placeholder="yyyy/mm/dd">
+            </div>
+            <div class="header-right-row">
+                <label>文書番号:</label>
+                <input type="text" id="doc-number" placeholder="例: 2026-001">
+            </div>
+        </div>
+
+        <h1>収支報告書</h1>
+        
+        <div class="header-info">
+            <div class="header-left">
+                <div class="info-group">
+                    <label>対象期間:</label>
+                    <input type="month" id="period-start"> ～ <input type="month" id="period-end">
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="info-group">
+                    <label>団体名:</label>
+                    <input type="text" id="label-name" value="Minakami RECORDS" placeholder="団体名を入力">
+                </div>
+                <div class="info-group">
+                    <label>代表者:</label>
+                    <input type="text" id="reporter-name" value="水上イリス" placeholder="名前を入力">
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-section">
+            <table class="summary-table">
+                <tr>
+                    <th>収入合計 (A)</th>
+                    <th>支出合計 (B)</th>
+                    <th>差引残高 (A - B)</th>
+                </tr>
+                <tr>
+                    <td id="total-income">¥0</td>
+                    <td id="total-expense">¥0</td>
+                    <td id="total-balance">¥0</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2 class="section-title">【 収入の部 】</h2>
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">日付</th>
+                    <th style="width: 60%;">摘要<br><span style="font-size:11px; font-weight:normal;">内容</span></th>
+                    <th style="width: 20%;">金額 (円)</th>
+                    <th class="no-print" style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="income-table-body"></tbody>
+        </table>
+        <div class="controls no-print" style="margin-bottom: 20px;">
+            <button id="add-income-btn" class="primary-btn">＋ 収入の項目を追加</button>
+        </div>
+
+        <h2 class="section-title">【 支出の部 】</h2>
+        <table class="details-table">
+            <thead>
+                <tr>
+                    <th style="width: 15%;">日付</th>
+                    <th style="width: 60%;">摘要<br><span style="font-size:11px; font-weight:normal;">内容</span></th>
+                    <th style="width: 20%;">金額 (円)</th>
+                    <th class="no-print" style="width: 5%;">操作</th>
+                </tr>
+            </thead>
+            <tbody id="expense-table-body"></tbody>
+        </table>
+        <div class="controls no-print" style="margin-bottom: 20px;">
+            <button id="add-expense-btn" class="primary-btn">＋ 支出の項目を追加</button>
+        </div>
+
+        <div class="doc-footer">
+            <div class="end-mark">以上</div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
