@@ -4,38 +4,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const addIncomeBtn = document.getElementById('add-income-btn');
     const addExpenseBtn = document.getElementById('add-expense-btn');
     const printBtn = document.getElementById('print-btn');
+    const importBtn = document.getElementById('import-btn');
+    const pasteArea = document.getElementById('paste-area');
 
-    // --- 自動期間設定ロジック (年月版) ---
     function setDefaultFiscalYear() {
         const now = new Date();
         const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth(); // 0=1月, 3=4月
+        const currentMonth = now.getMonth();
 
-        let targetYear;
-        // 4月以降なら昨年度は currentYear - 1、1〜3月なら昨年度は currentYear - 2
-        if (currentMonth >= 3) {
-            targetYear = currentYear - 1;
-        } else {
-            targetYear = currentYear - 2;
-        }
-
-        // YYYY-MM 形式の文字列を作成 (月は常に2桁にする)
-        const startPeriod = `${targetYear}-04`;
-        const endPeriod = `${targetYear + 1}-03`;
-
-        // フォームにセット
-        document.getElementById('period-start').value = startPeriod;
-        document.getElementById('period-end').value = endPeriod;
+        let targetYear = (currentMonth >= 3) ? currentYear - 1 : currentYear - 2;
+        document.getElementById('period-start').value = `${targetYear}-04`;
+        document.getElementById('period-end').value = `${targetYear + 1}-03`;
     }
-    // ------------------------------------
 
-    // 初期データ
-    const initialIncomes = [
-    ];
-    const initialExpenses = [
-    ];
-
-    // 行を作成して指定のtbodyに追加する関数
     function createRow(tbody, data = { date: '', desc: '', amount: '' }) {
         const tr = document.createElement('tr');
         
@@ -60,18 +41,15 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.appendChild(tr);
     }
 
-    // 合計金額を計算する関数
     function calculateTotals() {
         let totalIncome = 0;
         let totalExpense = 0;
 
-        const incomeRows = incomeTableBody.querySelectorAll('.row-amount');
-        incomeRows.forEach(input => {
+        incomeTableBody.querySelectorAll('.row-amount').forEach(input => {
             totalIncome += parseInt(input.value) || 0;
         });
 
-        const expenseRows = expenseTableBody.querySelectorAll('.row-amount');
-        expenseRows.forEach(input => {
+        expenseTableBody.querySelectorAll('.row-amount').forEach(input => {
             totalExpense += parseInt(input.value) || 0;
         });
 
@@ -82,19 +60,78 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total-balance').textContent = `¥${balance.toLocaleString()}`;
     }
 
-    // 実行・初期化
+    // --- コピペデータのインポート処理 ---
+    function importData() {
+        const text = pasteArea.value;
+        if (!text.trim()) {
+            alert('データが入力されていません。');
+            return;
+        }
+
+        // 改行で分割して行ごとの配列にする
+        const rows = text.split('\n');
+        let importedCount = 0;
+
+        rows.forEach(row => {
+            // タブ区切りで列ごとに分割
+            const cols = row.split('\t');
+            if (cols.length < 2) return; // 空行などはスキップ
+
+            const rawDate = cols[0] ? cols[0].trim() : '';
+            const storeName = cols[1] ? cols[1].trim() : '';
+            
+            // ヘッダー行を誤ってコピーした場合のスキップ処理
+            if (rawDate === '日付' || storeName === '摘要内容' || storeName === 'ストア名') return;
+
+            // 金額のカンマなどを除去して数値化
+            const expenseStr = cols[2] ? cols[2].replace(/[,¥]/g, '').trim() : '';
+            const incomeStr = cols[3] ? cols[3].replace(/[,¥]/g, '').trim() : '';
+            const notes = cols[4] ? cols[4].trim() : '';
+
+            // スプレッドシートの YYYY/MM/DD を input type="date" 用に YYYY-MM-DD に変換
+            const formattedDate = rawDate.replace(/\//g, '-');
+
+            // 摘要（ストア名）と備考（商品名）を結合
+            let desc = storeName;
+            if (notes) {
+                desc += ` (${notes})`; // 例: JR西日本 (乗車券)
+            }
+
+            const expenseAmount = parseInt(expenseStr) || 0;
+            const incomeAmount = parseInt(incomeStr) || 0;
+
+            // 収入金額があれば収入の部へ追加
+            if (incomeAmount > 0) {
+                createRow(incomeTableBody, { date: formattedDate, desc: desc, amount: incomeAmount });
+                importedCount++;
+            }
+            // 支払金額があれば支出の部へ追加
+            if (expenseAmount > 0) {
+                createRow(expenseTableBody, { date: formattedDate, desc: desc, amount: expenseAmount });
+                importedCount++;
+            }
+        });
+
+        if (importedCount > 0) {
+            calculateTotals();
+            pasteArea.value = ''; // 成功したらテキストエリアを空にする
+            alert(`${importedCount}件のデータをインポートしました！`);
+        } else {
+            alert('有効なデータが見つかりませんでした。列の構成を確認してください。');
+        }
+    }
+
+    // 初期化
     setDefaultFiscalYear(); 
     
-    initialIncomes.forEach(data => createRow(incomeTableBody, data));
-    initialExpenses.forEach(data => createRow(expenseTableBody, data));
-    
+    // 手入力を想定して最初は空行を1つずつ出しておく
     createRow(incomeTableBody);
     createRow(expenseTableBody);
-    
     calculateTotals();
 
     // イベントリスナー
     addIncomeBtn.addEventListener('click', () => createRow(incomeTableBody));
     addExpenseBtn.addEventListener('click', () => createRow(expenseTableBody));
     printBtn.addEventListener('click', () => window.print());
+    importBtn.addEventListener('click', importData);
 });

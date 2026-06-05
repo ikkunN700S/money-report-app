@@ -7,9 +7,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="controls no-print" style="text-align: center; margin-bottom: 20px;">
-        <button id="print-btn" class="success-btn">📄 PDF出力 (印刷)</button>
-        <p class="hint">※PDF出力時は、印刷設定で「用紙サイズ: A4」「余白: なし」「背景のグラフィック: オン」を推奨します。</p>
+    <div class="controls no-print import-section">
+        <div class="import-header">
+            <h3>📥 スプレッドシートから一括インポート</h3>
+            <button id="print-btn" class="success-btn">📄 PDF出力 (印刷)</button>
+        </div>
+        <p class="hint">列の順番: 【日付】 【摘要内容(ストア名)】 【支払金額】 【収入金額】 【備考(商品名)】</p>
+        <textarea id="paste-area" placeholder="スプレッドシートの行をコピーし、ここに貼り付けてください..."></textarea>
+        <div style="text-align: right; margin-top: 10px;">
+            <button id="import-btn" class="primary-btn">表に反映する</button>
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px dashed #ccc;">
     </div>
 
     <div class="page" id="report-page">
@@ -22,7 +30,7 @@
             </div>
             <div class="info-group">
                 <label>報告者:</label>
-                <input type="text" id="reporter-name" value="水上イリス / ICCHAMA" placeholder="担当者名">
+                <input type="text" id="reporter-name" value="水上イリス (ICCHAMA)" placeholder="名前を入力">
             </div>
         </div>
 
