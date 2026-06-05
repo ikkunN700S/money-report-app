@@ -68,44 +68,53 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 改行で分割して行ごとの配列にする
+        // ▼ 追加: 空行（日付、内容、金額がすべて未入力の行）を削除する関数
+        const removeEmptyRows = (tbody) => {
+            tbody.querySelectorAll('tr').forEach(row => {
+                const date = row.querySelector('.row-date').value;
+                const desc = row.querySelector('.row-desc').value.trim();
+                const amount = row.querySelector('.row-amount').value;
+                
+                if (!date && !desc && !amount) {
+                    row.remove();
+                }
+            });
+        };
+
+        // インポート前に両方のテーブルの空行をお掃除
+        removeEmptyRows(incomeTableBody);
+        removeEmptyRows(expenseTableBody);
+
         const rows = text.split('\n');
         let importedCount = 0;
 
         rows.forEach(row => {
-            // タブ区切りで列ごとに分割
             const cols = row.split('\t');
-            if (cols.length < 2) return; // 空行などはスキップ
+            if (cols.length < 2) return; 
 
             const rawDate = cols[0] ? cols[0].trim() : '';
             const storeName = cols[1] ? cols[1].trim() : '';
             
-            // ヘッダー行を誤ってコピーした場合のスキップ処理
             if (rawDate === '日付' || storeName === '摘要内容' || storeName === 'ストア名') return;
 
-            // 金額のカンマなどを除去して数値化
             const expenseStr = cols[2] ? cols[2].replace(/[,¥]/g, '').trim() : '';
             const incomeStr = cols[3] ? cols[3].replace(/[,¥]/g, '').trim() : '';
             const notes = cols[4] ? cols[4].trim() : '';
 
-            // スプレッドシートの YYYY/MM/DD を input type="date" 用に YYYY-MM-DD に変換
             const formattedDate = rawDate.replace(/\//g, '-');
 
-            // 摘要（ストア名）と備考（商品名）を結合
             let desc = storeName;
             if (notes) {
-                desc += ` (${notes})`; // 例: JR西日本 (乗車券)
+                desc += ` (${notes})`; 
             }
 
             const expenseAmount = parseInt(expenseStr) || 0;
             const incomeAmount = parseInt(incomeStr) || 0;
 
-            // 収入金額があれば収入の部へ追加
             if (incomeAmount > 0) {
                 createRow(incomeTableBody, { date: formattedDate, desc: desc, amount: incomeAmount });
                 importedCount++;
             }
-            // 支払金額があれば支出の部へ追加
             if (expenseAmount > 0) {
                 createRow(expenseTableBody, { date: formattedDate, desc: desc, amount: expenseAmount });
                 importedCount++;
@@ -114,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (importedCount > 0) {
             calculateTotals();
-            pasteArea.value = ''; // 成功したらテキストエリアを空にする
+            pasteArea.value = ''; 
             alert(`${importedCount}件のデータをインポートしました！`);
         } else {
             alert('有効なデータが見つかりませんでした。列の構成を確認してください。');
