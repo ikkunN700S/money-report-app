@@ -103,49 +103,6 @@ button:hover {
     flex-direction: column;
 }
 
-/* ▼ 右上ヘッダーの整列用スタイル ▼ */
-.doc-header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-bottom: 10px;
-    gap: 4px;
-}
-
-.header-right-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.header-right-row label {
-    font-weight: bold;
-    font-size: 13px;
-    width: 85px;
-    /* ラベルの幅を固定して上下を揃える */
-    text-align: right;
-    /* 「発行日:」と「文書番号:」のコロン位置を揃える */
-}
-
-.header-right-row input {
-    width: 100px;
-    text-align: right;
-    /* 入力された文字（日付や番号）を右寄りにする */
-    border: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 4px;
-    font-size: 13px;
-    font-family: inherit;
-    box-sizing: border-box;
-}
-
-.header-right-row input:focus {
-    outline: none;
-    border-bottom-color: var(--accent-color);
-}
-
-/* ▲ ここまで ▲ */
-
 h1 {
     text-align: center;
     border-bottom: 2px solid var(--text-color);
@@ -189,6 +146,7 @@ h1 {
     font-size: 13px;
 }
 
+/* 基本の入力欄スタイル */
 input,
 select {
     border: 1px solid #ccc;
@@ -217,6 +175,45 @@ input[type="text"] {
 }
 
 .info-group input:focus {
+    outline: none;
+    border-bottom-color: var(--accent-color);
+}
+
+
+.doc-header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-bottom: 10px;
+    gap: 4px;
+}
+
+.header-right-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.header-right-row label {
+    font-weight: bold;
+    font-size: 13px;
+    width: 65px;
+    text-align: right;
+}
+
+.header-right-row input[type="text"] {
+    width: 85px;
+    text-align: right;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    padding: 4px;
+    font-size: 13px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.header-right-row input[type="text"]:focus {
     outline: none;
     border-bottom-color: var(--accent-color);
 }
