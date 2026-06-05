@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const yyyy = currentYear;
         const mm = String(currentMonth + 1).padStart(2, '0');
         const dd = String(now.getDate()).padStart(2, '0');
-        // yyyy/mm/dd 形式でテキスト入力欄にセット
         document.getElementById('issue-date').value = `${yyyy}/${mm}/${dd}`;
     }
 
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const tr = document.createElement('tr');
         
         tr.innerHTML = `
-            <td><input type="date" class="row-date" value="${data.date}"></td>
+            <td><input type="text" class="row-date" value="${data.date}" placeholder="yyyy/mm/dd" style="text-align: center;"></td>
             <td>
                 <div class="desc-group">
                     <input type="text" class="row-store" value="${data.store}" placeholder="摘要 (ストア名等)">
@@ -80,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const removeEmptyRows = (tbody) => {
             tbody.querySelectorAll('tr').forEach(row => {
-                const date = row.querySelector('.row-date').value;
+                const date = row.querySelector('.row-date').value.trim();
                 const store = row.querySelector('.row-store').value.trim();
                 const item = row.querySelector('.row-item').value.trim();
                 const amount = row.querySelector('.row-amount').value;
@@ -110,7 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const incomeStr = cols[3] ? cols[3].replace(/[,¥]/g, '').trim() : '';
             const notes = cols[4] ? cols[4].trim() : ''; 
 
-            const formattedDate = rawDate.replace(/\//g, '-');
+            // ▼ スプレッドシートの日付(yyyy/mm/dd)をそのまま活かすように修正 ▼
+            const formattedDate = rawDate.replace(/-/g, '/');
             const expenseAmount = parseInt(expenseStr) || 0;
             const incomeAmount = parseInt(incomeStr) || 0;
 
