@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function createRow(tbody, data = { date: '', store: '', item: '', amount: '' }) {
         const tr = document.createElement('tr');
         
+        // 初期データがある場合、あらかじめカンマ付きにしておく
+        const formattedAmount = data.amount ? Number(data.amount).toLocaleString() : '';
+        
         tr.innerHTML = `
             <td><input type="text" class="row-date" value="${data.date}" placeholder="yyyy/mm/dd" style="text-align: center;"></td>
             <td>
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <input type="text" class="row-item" value="${data.item}" placeholder="内容 (商品名・備考等)">
                 </div>
             </td>
-            <td><input type="number" class="row-amount" value="${data.amount}" placeholder="0" min="0"></td>
+            <td><input type="text" class="row-amount" value="${formattedAmount}" placeholder="0" inputmode="numeric"></td>
             <td class="no-print" style="text-align:center;">
                 <button class="delete-btn" tabindex="-1">削除</button>
             </td>
@@ -42,7 +45,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const amountInput = tr.querySelector('.row-amount');
         const deleteBtn = tr.querySelector('.delete-btn');
 
-        amountInput.addEventListener('input', calculateTotals);
+        // 入力されるたびにカンマを自動付与する処理
+        amountInput.addEventListener('input', function(e) {
+            // 一旦数字以外の文字（カンマなど）を全て削除
+            let rawValue = this.value.replace(/[^\d]/g, '');
+            
+            // 数値が存在すればカンマ付きにフォーマットして戻す
+            if (rawValue !== '') {
+                this.value = parseInt(rawValue, 10).toLocaleString();
+            } else {
+                this.value = '';
+            }
+            calculateTotals();
+        });
+
         deleteBtn.addEventListener('click', () => {
             tr.remove();
             calculateTotals();
@@ -55,12 +71,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let totalIncome = 0;
         let totalExpense = 0;
 
+        // カンマを取り除いて計算
         incomeTableBody.querySelectorAll('.row-amount').forEach(input => {
-            totalIncome += parseInt(input.value) || 0;
+            const rawStr = input.value.replace(/,/g, ''); // カンマを除去
+            totalIncome += parseInt(rawStr, 10) || 0;
         });
 
         expenseTableBody.querySelectorAll('.row-amount').forEach(input => {
-            totalExpense += parseInt(input.value) || 0;
+            const rawStr = input.value.replace(/,/g, ''); // カンマを除去
+            totalExpense += parseInt(rawStr, 10) || 0;
         });
 
         const balance = totalIncome - totalExpense;
@@ -109,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const incomeStr = cols[3] ? cols[3].replace(/[,¥]/g, '').trim() : '';
             const notes = cols[4] ? cols[4].trim() : ''; 
 
-            // ▼ スプレッドシートの日付(yyyy/mm/dd)をそのまま活かすように修正 ▼
             const formattedDate = rawDate.replace(/-/g, '/');
             const expenseAmount = parseInt(expenseStr) || 0;
             const incomeAmount = parseInt(incomeStr) || 0;
