@@ -281,6 +281,19 @@ th {
     letter-spacing: 4px;
 }
 
+/* モバイル用 */
+@media screen and (max-width: 840px) {
+    body {
+        padding: 10px 0;
+        overflow-x: hidden;
+    }
+    
+    .import-section, .page {
+        /* A4幅が現在の画面幅に収まるように自動縮小 */
+        zoom: calc(100vw / 840);
+    }
+}
+
 @page {
     size: A4;
     margin: 0mm;
