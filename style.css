@@ -131,7 +131,7 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 4px;
+    gap: 2px;
 }
 
 .info-group {
@@ -165,7 +165,8 @@ input[type="text"] {
 }
 
 .info-group input[type="text"] {
-    min-width: 180px;
+    min-width: 110px;
+    text-align: right;
 }
 
 .header-left input[type="month"] {
@@ -205,7 +206,7 @@ input[type="text"] {
     text-align: right;
     border: none;
     border-bottom: 1px solid var(--border-color);
-    padding: 4px;
+    padding: 2px;
     font-size: 13px;
     font-family: inherit;
     box-sizing: border-box;
@@ -237,8 +238,15 @@ th {
 }
 
 .summary-table {
-    width: 50%;
+    width: auto;
+    min-width: 50%;
     margin: 0 0 15px auto;
+}
+
+/* ヘッダ金額セルで改行禁止 */
+.summary-table th,
+.summary-table td {
+    white-space: nowrap; 
 }
 
 .summary-table td {
