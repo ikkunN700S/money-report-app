@@ -18,7 +18,7 @@ body {
 }
 
 .import-section {
-    width: 210mm;
+    width: 794px;
     background: #fff;
     padding: 10px 15px;
     border-radius: 8px;
@@ -92,9 +92,9 @@ button:hover {
 
 /* A4用紙スタイル */
 .page {
-    width: 210mm;
-    min-height: 297mm;
-    padding: 12mm 15mm;
+    width: 794px;
+    min-height: 1123px;
+    padding: 45px 56px;
     background-color: var(--paper-color);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
@@ -108,7 +108,7 @@ h1 {
     border-bottom: 2px solid var(--text-color);
     padding-bottom: 5px;
     margin-top: 0;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     letter-spacing: 2px;
     font-size: 20px;
 }
@@ -146,7 +146,6 @@ h1 {
     font-size: 13px;
 }
 
-/* 基本の入力欄スタイル */
 input,
 select {
     border: 1px solid #ccc;
@@ -179,12 +178,11 @@ input[type="text"] {
     border-bottom-color: var(--accent-color);
 }
 
-
 .doc-header-right {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    margin-bottom: 5px;
+    margin-bottom: 0px;
     gap: 0px;
 }
 
@@ -240,7 +238,7 @@ th {
 
 .summary-table {
     width: 50%;
-    margin: 0 0 10px auto;
+    margin: 0 0 15px auto;
 }
 
 .summary-table td {
@@ -281,19 +279,33 @@ th {
     letter-spacing: 4px;
 }
 
-/* モバイル用 */
+
+/* モバイル端末 */
 @media screen and (max-width: 840px) {
     body {
-        padding: 10px 0;
+        padding: 10px 0 0 0;
+        align-items: flex-start;
         overflow-x: hidden;
     }
-    
-    .import-section, .page {
-        /* A4幅が現在の画面幅に収まるように自動縮小 */
-        zoom: calc(100vw / 840);
+
+    .import-section,
+    .page {
+        /* スマホの画面幅の96vwに合わせて縮小 */
+        margin-left: 2vw;
+        transform: scale(calc(96vw / 794));
+        transform-origin: top left;
+    }
+
+    .import-section {
+        margin-bottom: calc(-120px * (1 - 96vw / 794));
+    }
+
+    .page {
+        margin-bottom: calc(-1123px * (1 - 96vw / 794));
     }
 }
 
+/* 印刷設定 */
 @page {
     size: A4;
     margin: 0mm;
@@ -314,7 +326,7 @@ th {
         box-shadow: none;
         width: 100%;
         min-height: auto;
-        padding: 8mm 15mm;
+        padding: 10mm 15mm;
     }
 
     input,
