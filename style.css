@@ -166,6 +166,7 @@ input[type="text"] {
 
 .info-group input[type="text"] {
     min-width: 110px;
+    text-align: right;
 }
 
 .header-left input[type="month"] {
